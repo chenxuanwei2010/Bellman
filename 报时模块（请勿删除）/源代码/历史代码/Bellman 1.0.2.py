@@ -1,0 +1,277 @@
+import time#A
+import pygame
+import tkinter as tk
+import datetime
+#B
+now = datetime.datetime.now()
+t = time.localtime(time.time())
+weekday_num = now.weekday()
+b=0
+c=0
+d=0
+e=0
+#C
+file1= "E:\报时模块（请勿删除）\报时铃声\预备铃.mp3"
+file2="E:\报时模块（请勿删除）\报时铃声\上课铃.mp3"
+file3="E:\报时模块（请勿删除）\报时铃声\下课铃.mp3"
+file4="E:\报时模块（请勿删除）\报时铃声\放学铃声(鸟之诗).mp3"
+#D
+pygame.mixer.init()
+#E
+if 1:
+    window = tk.Tk()
+    window.title('提示')
+    window.geometry('300x200')  # 注意：这里的乘是×不是*
+    a = tk.Label(window, text="程序已开启", font=(1, 25))
+    a.pack(pady=5)
+    window.after(1000, window.destroy)
+    window.mainloop()
+#F
+if weekday_num > 4:
+    with open('E:\报时模块（请勿删除）\调休校准\调休校准.txt', 'r') as file:
+        a=0
+        for line in file:
+            if a== 0:
+                try:
+                    b = int(line.strip())
+                except:
+                    pass
+            elif a == 1:
+                try:
+                    c = int(line.strip())
+                except:
+                    pass
+            elif a == 2:
+                try:
+                    d = int(line.strip())
+                except:
+                    pass
+            elif a == 3:
+                try:
+                    e = int(line.strip())
+                except:
+                    pass
+            a += 1
+        file.close()
+    if t.tm_year!=b or t.tm_mon!=c or t.tm_mday!=d:
+        x=0
+        while x == 0:
+            global_value = ""
+
+            def get_input(event='<Return>'):
+                global global_value  # 声明使用全局变量
+                value = entry.get()  # 获取输入框的值
+                global_value = value  # 赋值给全局变量
+                root.destroy()
+
+            root = tk.Tk()
+            root.geometry('300x200')
+            root.title('提示')
+            a = tk.Label(root, text="请输入\n调休后的星期\n（1-5）", font=(1, 25))
+            a.pack(pady=5)
+            # 输入框
+            entry = tk.Entry(root)
+            entry.pack(pady=10)
+            # 绑定回车键
+            entry.bind('<Return>', get_input)
+            # 按钮 - command绑定点击事件
+            button = tk.Button(root, text="确定", command=get_input)
+            button.pack()
+            try:
+                root.after(12000, get_input)
+            except:
+                pass
+            root.mainloop()
+
+            if global_value == "1" or global_value == "2" or global_value == "3" or global_value == "4" or global_value == "5":
+                e = int(global_value) - 1
+                weekday_num = e
+                with open('E:\报时模块（请勿删除）\调休校准\调休校准.txt', 'w', encoding='utf-8') as file:
+                    file.write(str(t.tm_year)+"\n")
+                    file.write(str(t.tm_mon)+"\n")
+                    file.write(str(t.tm_mday)+"\n")
+                    file.write(str(e)+"\n")
+                    file.close()
+                window = tk.Tk()
+                window.title('提示')
+                window.geometry('300x200')  # 注意：这里的乘是×不是*
+                a = tk.Label(window, text="切换成功", font=(1, 25))
+                a.pack(pady=5)
+                window.after(1000, window.destroy)
+                window.mainloop()
+                x += 1
+            elif global_value == "":
+                weekday_num = 1
+                window = tk.Tk()
+                window.title('提示')
+                window.geometry('300x200')  # 注意：这里的乘是×不是*
+                a = tk.Label(window, text="未输入，\n默认切换至周1-4模式", font=(1, 25))
+                a.pack(pady=5)
+                window.after(1000, window.destroy)
+                window.mainloop()
+                x+=1
+            else:
+                window = tk.Tk()
+                window.title('提示')
+                window.geometry('300x200')  # 注意：这里的乘是×不是*
+                a = tk.Label(window, text="请输入\n正确的调休后的星期\n（1-5)", font=(1, 25))
+                a.pack(pady=5)
+                window.after(1000, window.destroy)
+                window.mainloop()
+    elif t.tm_year==b and t.tm_mon==c and t.tm_mday==d:
+        weekday_num = e
+
+#G
+while 1:
+    t = time.localtime(time.time())
+    #交手机
+    if t.tm_hour == 7 and t.tm_min == 45 and t.tm_sec == 0:  #早读
+         pygame.mixer.music.load(file1)
+         pygame.mixer.music.play()
+         while pygame.mixer.music.get_busy():  # 检查音乐是否正在播放
+             time.sleep(0.1)  # 每次循环等待0.1秒
+    elif t.tm_hour == 8 and t.tm_min == 15 and t.tm_sec == 0: #上午1，2节
+        pygame.mixer.music.load(file1)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():  # 检查音乐是否正在播放
+            time.sleep(0.1)  # 每次循环等待0.1秒
+    elif t.tm_hour == 10 and t.tm_min == 10 and t.tm_sec == 0:#上午3，4节
+        pygame.mixer.music.load(file1)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():  # 检查音乐是否正在播放
+            time.sleep(0.1)  # 每次循环等待0.1秒
+    elif t.tm_hour == 13 and t.tm_min == 55 and t.tm_sec == 0:#第五节课
+        pygame.mixer.music.load(file1)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():  # 检查音乐是否正在播放
+            time.sleep(0.1)  # 每次循环等待0.1秒
+    elif t.tm_hour == 14 and t.tm_min == 55 and t.tm_sec == 0:#第六节课
+        pygame.mixer.music.load(file1)
+        pygame.mixer.music.play()
+    elif t.tm_hour == 15 and t.tm_min == 45 and t.tm_sec == 0:#第七节课
+        pygame.mixer.music.load(file1)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():  # 检查音乐是否正在播放
+            time.sleep(0.1)  # 每次循环等待0.1秒
+    elif t.tm_hour == 18 and t.tm_min == 55 and t.tm_sec == 0:#第八节课
+        pygame.mixer.music.load(file1)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():  # 检查音乐是否正在播放
+            time.sleep(0.1)  # 每次循环等待0.1秒
+    elif t.tm_hour == 20 and t.tm_min == 5 and t.tm_sec == 0:#第9节课
+        pygame.mixer.music.load(file1)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():  # 检查音乐是否正在播放
+            time.sleep(0.1)  # 每次循环等待0.1秒
+
+    #上课
+    elif t.tm_hour == 7 and t.tm_min == 50 and t.tm_sec == 0:  #早读 上课
+         pygame.mixer.music.load(file2)
+         pygame.mixer.music.play()
+         while pygame.mixer.music.get_busy():  # 检查音乐是否正在播放
+             time.sleep(0.1)  # 每次循环等待0.1秒
+    elif t.tm_hour == 8 and t.tm_min == 20 and t.tm_sec == 0:  # 上午1，2节 上课
+        pygame.mixer.music.load(file2)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():  # 检查音乐是否正在播放
+            time.sleep(0.1)  # 每次循环等待0.1秒
+    elif t.tm_hour == 10 and t.tm_min == 15 and t.tm_sec == 0:  # 上午3,4节 上课
+         pygame.mixer.music.load(file2)
+         pygame.mixer.music.play()
+         while pygame.mixer.music.get_busy():  # 检查音乐是否正在播放
+             time.sleep(0.1)  # 每次循环等待0.1秒
+    elif t.tm_hour == 14 and t.tm_min == 0 and t.tm_sec == 0:  # 上午5节 上课
+        pygame.mixer.music.load(file2)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():  # 检查音乐是否正在播放
+            time.sleep(0.1)  # 每次循环等待0.1秒
+    elif t.tm_hour == 15 and t.tm_min == 0 and t.tm_sec == 0:  # 上午6节 上课
+        pygame.mixer.music.load(file2)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():  # 检查音乐是否正在播放
+            time.sleep(0.1)  # 每次循环等待0.1秒
+    elif t.tm_hour == 15 and t.tm_min == 50 and t.tm_sec == 0:  # 上午7节 上课
+         pygame.mixer.music.load(file2)
+         pygame.mixer.music.play()
+         while pygame.mixer.music.get_busy():  # 检查音乐是否正在播放
+             time.sleep(0.1)  # 每次循环等待0.1秒
+    elif t.tm_hour == 19 and t.tm_min == 0 and t.tm_sec == 0:  # 第八节 上课
+         pygame.mixer.music.load(file2)
+         pygame.mixer.music.play()
+         while pygame.mixer.music.get_busy():  # 检查音乐是否正在播放
+             time.sleep(0.1)  # 每次循环等待0.1秒
+    elif t.tm_hour == 20 and t.tm_min == 10 and t.tm_sec == 0:  # 第9节 上课
+        pygame.mixer.music.load(file2)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():  # 检查音乐是否正在播放
+            time.sleep(0.1)  # 每次循环等待0.1秒
+
+    # 下课
+    elif t.tm_hour == 8 and t.tm_min == 5 and t.tm_sec == 0:  # 早读 下课
+        pygame.mixer.music.load(file3)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():  # 检查音乐是否正在播放
+            time.sleep(0.1)  # 每次循环等待0.1秒
+    elif t.tm_hour == 9 and t.tm_min == 50 and t.tm_sec == 0:  # 第1，2节 下课
+        pygame.mixer.music.load(file3)
+        pygame.mixer.music.play()
+        window = tk.Tk()
+        window.title('下课了')
+        window.geometry('300x200')  # 注意：这里的乘是×不是*
+        a = tk.Label(window, text="老师\n您辛苦了\n不要忘记带走U盘", font=(1, 25))
+        a.pack(pady=5)
+        window.after(120000, window.destroy)
+        window.mainloop()
+    elif t.tm_hour == 14 and t.tm_min == 45 and t.tm_sec == 0 and weekday_num!=4:# 第5节 下课
+        pygame.mixer.music.load(file3)
+        pygame.mixer.music.play()
+        window = tk.Tk()
+        window.title('下课了')
+        window.geometry('300x200')  # 注意：这里的乘是×不是*
+        a = tk.Label(window, text="老师\n您辛苦了\n不要忘记带走U盘", font=(1, 25))
+        a.pack(pady=5)
+        window.after(120000, window.destroy)
+        window.mainloop()
+    elif t.tm_hour == 15 and t.tm_min == 40 and t.tm_sec == 0:# 第6节 下课
+        pygame.mixer.music.load(file3)
+        pygame.mixer.music.play()
+        window = tk.Tk()
+        window.title('下课了')
+        window.geometry('300x200')  # 注意：这里的乘是×不是*
+        a = tk.Label(window, text="老师\n您辛苦了\n不要忘记带走U盘", font=(1, 25))
+        a.pack(pady=5)
+        window.after(120000, window.destroy)
+        window.mainloop()
+    elif t.tm_hour == 20 and t.tm_min == 0 and t.tm_sec == 0:# 第8节 下课
+        pygame.mixer.music.load(file3)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():  # 检查音乐是否正在播放
+            time.sleep(0.1)  # 每次循环等待0.1秒
+    elif t.tm_hour == 20 and t.tm_min == 35 and t.tm_sec == 0:# 第9节 下课
+        pygame.mixer.music.load(file3)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():  # 检查音乐是否正在播放
+            time.sleep(0.1)  # 每次循环等待0.1秒
+    #放学
+    elif t.tm_hour == 11 and t.tm_min == 30 and t.tm_sec == 0:# 上午放学
+        pygame.mixer.music.load(file4)
+        pygame.mixer.music.play()
+        window = tk.Tk()
+        window.title('下课了')
+        window.geometry('300x200')  # 注意：这里的乘是×不是*
+        a = tk.Label(window, text="老师\n您辛苦了\n不要忘记带走U盘", font=(1, 25))
+        a.pack(pady=5)
+        window.after(120000, window.destroy)
+        window.mainloop()
+    elif t.tm_hour == 16 and t.tm_min == 35 and t.tm_sec == 0:# 下午放学
+        pygame.mixer.music.load(file4)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():  # 检查音乐是否正在播放
+            time.sleep(0.1)  # 每次循环等待0.1秒
+    elif t.tm_hour == 14 and t.tm_min == 45 and t.tm_sec == 0 and weekday_num==4:# 周五下午放学
+        pygame.mixer.music.load(file4)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():  # 检查音乐是否正在播放
+            time.sleep(0.1)  # 每次循环等待0.1秒
+    else:
+        time.sleep(1)

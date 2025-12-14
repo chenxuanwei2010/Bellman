@@ -1,0 +1,14 @@
+2025/12/14-14:18:44
+异常详情:
+Traceback (most recent call last):
+  File "e:\报时模块（请勿删除）\源代码\Bellman-0.py", line 52, in cuowu_try
+    return func()
+  File "e:\报时模块（请勿删除）\源代码\Bellman-0.py", line 369, in <lambda>
+    cuowu_try(lambda:linshixiugai())
+                     ~~~~~~~~~~~~^^
+  File "e:\报时模块（请勿删除）\源代码\Bellman-0.py", line 350, in linshixiugai
+    n,m,x,y,z = l.split('|')
+    ^^^^^^^^^
+ValueError: not enough values to unpack (expected 5, got 1)
+
+--------------------------------------------------
